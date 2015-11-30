@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Tic-tac-toe</title>
+<meta charset = "UTF-8"> </meta>
+
+
+</head>
+
+<body onload = "init()">
+
+	<canvas id = "canvas" width = "300" height = "300">
+	</canvas>
+
+	<script>
+		function init()
+		{
+			c = document.getElementById("canvas");
+
+	 		ctx = c.getContext("2d");
+
+	 		lines = 2;
+	 		columns = 2;
+	 		caseWidth = 100;
+	 		caseHeight = 100;
+
+	 		drawGrid(lines, columns, caseWidth, caseHeight);
+
+			ctx.fillStyle = "black";
+			ctx.font="30px Arial";
+			ctx.fillText("Tic-Tac-Toe!" ,50 ,50);
+		}
+		
+
+		function drawGrid(lines, columns, caseWidth, caseHeight)
+ 		{
+ 			ctx.fillStyle = "black";
+ 			for(i = 0; i < lines; i++)
+ 			{
+	 			yPosition = caseHeight * (i + 1)
+
+	 			ctx.moveTo(0, yPosition);
+	 			ctx.lineTo(caseWidth * 3, yPosition);
+	 			ctx.stroke();
+ 			}
+
+ 			for(i = 0; i < columns; i++)
+ 			{
+				xPosition = caseWidth * (i + 1)
+
+	 			ctx.moveTo(xPosition, 0);
+	 			ctx.lineTo(xPosition, caseHeight * 3);
+	 			ctx.stroke();
+ 			}
+ 		}
+
+		hgX = false;
+		hcX = false;
+		hdX = false;
+		mgX = false;
+		mcX = false;
+		mdX = false;
+		bgX = false;
+		bcX = false;
+		bdX = false;
+
+		hgO = false;
+		hcO = false;
+		hdO = false;
+		mgO = false;
+		mcO = false;
+		mdO = false;
+		bgO = false;
+		bcO = false;
+		bdO = false;
+
+	</script>
+
+
+</body>
+
+</html>
