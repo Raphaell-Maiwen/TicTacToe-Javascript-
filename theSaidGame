@@ -29,12 +29,13 @@
 
 			ctx.fillStyle = "black";
 			ctx.font="30px Arial";
-			ctx.fillText("Tic-Tac-Toe!" ,50 ,50);
+			//ctx.fillText("Tic-Tac-Toe!" ,50 ,50);
 
 			player1 = createPlayer();
 			player2 = createPlayer();
 
 			player2.turn = false;
+			player2.color = "red";
 			player2.symbol = 'O';
 			player2.number = 2;
 
@@ -55,6 +56,7 @@
 			var player = {};
 			player.turn = true;
 			player.symbol = 'X';
+			player.color = "green";
 			player.number = 1;
 			player.tl = false;
 			player.tc = false;
@@ -115,54 +117,81 @@
  			{
  				p.tl = true;
  				tl = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight/2);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 2 && y < caseHeight && !tc)
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight && !tc)
  			{
  				p.tc = true;
  				tc = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight/2);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 3 && y < caseHeight && !tr)
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight && !tr)
  			{
  				p.tr = true;
  				tr = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight/2);
  				changeTurns();
  			}
- 			else if(x < caseWidth && y < caseHeight * 2 && !ml)
+ 			else if(x < caseWidth  && y < caseHeight * 2 && y > caseHeight && !ml)
  			{
  				p.ml = true;
  				ml = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 1.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 2 && y < caseHeight * 2 && !mc)
+ 			else if(x < caseWidth * 2 && x > caseWidth  && y < caseHeight * 2 && y > caseHeight && !mc)
  			{
  				p.mc = true;
  				mc = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 1.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 3 && y < caseHeight * 2 && !mr)
+ 			else if(x < caseWidth * 3 &&  x > caseWidth * 2 && y < caseHeight * 2 && y > caseHeight && !mr)
  			{
  				p.mr = true;
  				mr = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 1.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth && y < caseHeight * 3 && !bl)
+ 			else if(x < caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && !bl)
  			{
  				p.bl = true;
  				bl = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 2.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 2 && y < caseHeight * 3 && !bc)
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && !bc)
  			{
  				p.bc = true;
  				bc = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 2.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 3 && y < caseHeight * 3 && !br)
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight * 3 && y > caseHeight * 2 && !br)
  			{
  				p.br = true;
  				br = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 2.5);
  				changeTurns();
  			}
 
@@ -181,7 +210,16 @@
  				(p.tl && p.ml && p.bl) || (p.tc && p.mc && p.bc) || (p.tr && p.mr && p.br) ||
  				(p.tl && p.mc && p.br) || (p.tr && p.mc && p.bl))
  			{
+ 				ctx.fillStyle = "black";
+				ctx.font="30px Arial";
  				ctx.fillText("Player " + p.number + " wins!", 130, 46);
+ 				canvas.removeEventListener("click", getClickPosition, false);
+ 			}
+ 			else if(tl && tc && tr && ml && mc && mr && bl && bc && br)
+ 			{
+ 				ctx.fillStyle = "black";
+				ctx.font="30px Arial";
+ 				ctx.fillText("Tie!", 130, 46);
  				canvas.removeEventListener("click", getClickPosition, false);
  			}
  		}
