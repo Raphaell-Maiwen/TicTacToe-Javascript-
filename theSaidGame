@@ -30,6 +30,43 @@
 			ctx.fillStyle = "black";
 			ctx.font="30px Arial";
 			ctx.fillText("Tic-Tac-Toe!" ,50 ,50);
+
+			player1 = createPlayer();
+			player2 = createPlayer();
+
+			player2.turn = false;
+			player2.symbol = 'O';
+			player2.number = 2;
+
+			//t = Top, m = Middle, b = Bottom, l = Left, c = center, r = right
+			tl = false;
+			tc = false;
+			tr = false;
+			ml = false;
+			mc = false;
+			mr = false;
+			bl = false;
+			bc = false;
+			br = false;
+		}
+
+		function createPlayer(p)
+		{
+			var player = {};
+			player.turn = true;
+			player.symbol = 'X';
+			player.number = 1;
+			player.tl = false;
+			player.tc = false;
+			player.tr = false;
+			player.ml = false;
+			player.mc = false;
+			player.mr = false;
+			player.bl = false;
+			player.bm = false;
+			player.br = false;
+
+			return player;
 		}
 		
 
@@ -55,28 +92,101 @@
  			}
  		}
 
-		hgX = false;
-		hcX = false;
-		hdX = false;
-		mgX = false;
-		mcX = false;
-		mdX = false;
-		bgX = false;
-		bcX = false;
-		bdX = false;
+ 		canvas.addEventListener("click", getClickPosition, false);
 
-		hgO = false;
-		hcO = false;
-		hdO = false;
-		mgO = false;
-		mcO = false;
-		mdO = false;
-		bgO = false;
-		bcO = false;
-		bdO = false;
+ 		function getClickPosition(e)
+ 		{
+ 			var xPosition = e.clientX;
+ 			var yPosition = e.clientY;
+ 			console.log(xPosition, yPosition);
+ 			if(player1.turn)
+ 			{
+ 				casesUpdate(player1, xPosition, yPosition);
+ 			}
+ 			else
+ 			{
+ 				casesUpdate(player2, xPosition, yPosition);
+ 			}
+ 		}
+
+ 		function casesUpdate(p, x, y)
+ 		{
+ 			if(x < caseWidth && y < caseHeight && !tl)
+ 			{
+ 				p.tl = true;
+ 				tl = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && y < caseHeight && !tc)
+ 			{
+ 				p.tc = true;
+ 				tc = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && y < caseHeight && !tr)
+ 			{
+ 				p.tr = true;
+ 				tr = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth && y < caseHeight * 2 && !ml)
+ 			{
+ 				p.ml = true;
+ 				ml = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && y < caseHeight * 2 && !mc)
+ 			{
+ 				p.mc = true;
+ 				mc = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && y < caseHeight * 2 && !mr)
+ 			{
+ 				p.mr = true;
+ 				mr = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth && y < caseHeight * 3 && !bl)
+ 			{
+ 				p.bl = true;
+ 				bl = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && y < caseHeight * 3 && !bc)
+ 			{
+ 				p.bc = true;
+ 				bc = true;
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && y < caseHeight * 3 && !br)
+ 			{
+ 				p.br = true;
+ 				br = true;
+ 				changeTurns();
+ 			}
+
+ 			victory(p);
+ 		}
+
+ 		function changeTurns()
+ 		{
+ 			player1.turn = !player1.turn;
+ 			player2.turn = ! player2.turn;
+ 		}
+
+ 		function victory(p)
+ 		{
+ 			if((p.tl && p.tc && p.tr) || (p.ml && p.mc && p.mr) || (p.bl && p.bc && p.br) ||
+ 				(p.tl && p.ml && p.bl) || (p.tc && p.mc && p.bc) || (p.tr && p.mr && p.br) ||
+ 				(p.tl && p.mc && p.br) || (p.tr && p.mc && p.bl))
+ 			{
+ 				ctx.fillText("Player " + p.number + " wins!", 130, 46);
+ 				canvas.removeEventListener("click", getClickPosition, false);
+ 			}
+ 		}
 
 	</script>
-
 
 </body>
 
