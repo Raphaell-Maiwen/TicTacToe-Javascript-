@@ -38,17 +38,12 @@
 			player2.color = "red";
 			player2.symbol = 'O';
 			player2.number = 2;
+			player2.casesValue = -1;
 
 			//t = Top, m = Middle, b = Bottom, l = Left, c = center, r = right
-			tl = false;
-			tc = false;
-			tr = false;
-			ml = false;
-			mc = false;
-			mr = false;
-			bl = false;
-			bc = false;
-			br = false;
+			//cases = [[0, 0, 0], [1, 0, 0], [2, 0, 0], [0, 1, 0], [1, 1, 0], [2, 1, 0], [0, 2, 0], [1, 2, 0], [2, 2, 0]];
+			cases = [[0, 0 ,0], [0, 0 ,0], [0, 0, 0]];
+			
 		}
 
 		function createPlayer(p)
@@ -58,15 +53,7 @@
 			player.symbol = 'X';
 			player.color = "green";
 			player.number = 1;
-			player.tl = false;
-			player.tc = false;
-			player.tr = false;
-			player.ml = false;
-			player.mc = false;
-			player.mr = false;
-			player.bl = false;
-			player.bm = false;
-			player.br = false;
+			player.casesValue = 1;
 
 			return player;
 		}
@@ -113,82 +100,74 @@
 
  		function casesUpdate(p, x, y)
  		{
- 			if(x < caseWidth && y < caseHeight && !tl)
+ 			if(x < caseWidth && y < caseHeight && cases[0][0] == 0)
  			{
- 				p.tl = true;
- 				tl = true;
+ 				cases[0][0] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth/2, caseHeight/2);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight && !tc)
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight && cases[0][1] == 0)
  			{
- 				p.tc = true;
- 				tc = true;
+ 				console.log("Okay");
+ 				cases[0][1] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight/2);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight && !tr)
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight && cases[0][2] == 0)
  			{
- 				p.tr = true;
- 				tr = true;
+ 				cases[0][2] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight/2);
  				changeTurns();
  			}
- 			else if(x < caseWidth  && y < caseHeight * 2 && y > caseHeight && !ml)
+ 			else if(x < caseWidth  && y < caseHeight * 2 && y > caseHeight && cases[1][0] == 0)
  			{
- 				p.ml = true;
- 				ml = true;
+ 				cases[1][0] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 1.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 2 && x > caseWidth  && y < caseHeight * 2 && y > caseHeight && !mc)
+ 			else if(x < caseWidth * 2 && x > caseWidth  && y < caseHeight * 2 && y > caseHeight && cases[1][1] == 0)
  			{
- 				p.mc = true;
- 				mc = true;
+ 				cases[1][1] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 1.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 3 &&  x > caseWidth * 2 && y < caseHeight * 2 && y > caseHeight && !mr)
+ 			else if(x < caseWidth * 3 &&  x > caseWidth * 2 && y < caseHeight * 2 && y > caseHeight && cases[1][2] == 0)
  			{
- 				p.mr = true;
- 				mr = true;
+ 				cases[1][2] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 1.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && !bl)
+ 			else if(x < caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][0] == 0)
  			{
- 				p.bl = true;
- 				bl = true;
+ 				cases[2][0] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 2.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && !bc)
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][1] == 0)
  			{
- 				p.bc = true;
- 				bc = true;
+ 				cases[2][1] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 2.5);
  				changeTurns();
  			}
- 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight * 3 && y > caseHeight * 2 && !br)
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][2] == 0)
  			{
- 				p.br = true;
- 				br = true;
+ 				cases[2][2] = p.casesValue;
  				ctx.fillStyle = p.color;
 				ctx.font="60px Arial";
  				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 2.5);
@@ -206,24 +185,39 @@
 
  		function victory(p)
  		{
- 			if((p.tl && p.tc && p.tr) || (p.ml && p.mc && p.mr) || (p.bl && p.bc && p.br) ||
- 				(p.tl && p.ml && p.bl) || (p.tc && p.mc && p.bc) || (p.tr && p.mr && p.br) ||
- 				(p.tl && p.mc && p.br) || (p.tr && p.mc && p.bl))
+ 			if((cases[0][0] == p.casesValue && cases[1][1] == p.casesValue && cases[2][2] == p.casesValue)
+ 				|| cases [2][0] == p.casesValue && cases [1][1] == p.casesValue && cases [0][2] == p.casesValue)
  			{
- 				ctx.fillStyle = "black";
+				ctx.fillStyle = "black";
 				ctx.font="30px Arial";
  				ctx.fillText("Player " + p.number + " wins!", 130, 46);
  				canvas.removeEventListener("click", getClickPosition, false);
+
  			}
- 			else if(tl && tc && tr && ml && mc && mr && bl && bc && br)
+
+ 			else if (cases[0][0] != 0 && cases[0][1] != 0 && cases[0][2] != 0 && cases[1][0] != 0 && cases[1][1] != 0 &&
+ 					cases[1][2] != 0 && cases[2][0] != 0 && cases[2][1] != 0 && cases[2][2] != 0)
  			{
  				ctx.fillStyle = "black";
 				ctx.font="30px Arial";
  				ctx.fillText("Tie!", 130, 46);
  				canvas.removeEventListener("click", getClickPosition, false);
  			}
- 		}
 
+ 			else for(i = 0; i < 3; i++)
+ 			{
+ 				console.log(cases[i][0], cases[i][1], cases[i][2]);
+ 				if((cases[i][0] == p.casesValue && cases[i][1] == p.casesValue && cases[i][2] == p.casesValue)
+ 					|| (cases[0][i] == p.casesValue && cases[1][i] == p.casesValue && cases[2][i] == p.casesValue))
+ 				{
+ 					ctx.fillStyle = "black";
+					ctx.font="30px Arial";
+	 				ctx.fillText("Player " + p.number + " wins!", 130, 46);
+	 				canvas.removeEventListener("click", getClickPosition, false);
+ 				}
+ 			}
+ 		}
+ 		
 	</script>
 
 </body>
