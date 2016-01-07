@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Tic-tac-toe</title>
+<meta charset = "UTF-8"> </meta>
+
+
+</head>
+
+<body onload = "init()">
+
+	<canvas id = "canvas" width = "300" height = "300">
+	</canvas>
+
+	<script>
+		function init()
+		{
+			//TODO: -Commentaire
+			//TODO: Code qui se rÃ©pÃ¨te (notamment les positions). Fonctions?
+			//TODO: Victory: Moyen de faire une boucle plus efficace?
+			c = document.getElementById("canvas");
+
+	 		ctx = c.getContext("2d");
+
+	 		rows = 2;
+	 		columns = 2;
+	 		cases = 3;
+	 		caseWidth = 100;
+	 		caseHeight = 100;
+
+	 		drawGrid(rows, columns, caseWidth, caseHeight);
+
+			ctx.fillStyle = "black";
+			ctx.font="30px Arial";
+			//ctx.fillText("Tic-Tac-Toe!" ,50 ,50);
+
+			player1 = createPlayer();
+			computer = createPlayer();
+
+			computer.turn = false;
+			computer.color = "red";
+			computer.symbol = 'O';
+			computer.number = 2;
+			computer.casesValue = -1;
+
+			tempCase = 0;
+
+			cases = [[0, 0 ,0], [0, 0 ,0], [0, 0, 0]]; //The first dimension represents the columns, and the second represents the rows. 
+														//When the value is set to 0, it is empty. When it is filled by a piece, it takes
+														//the variable player.casesValue as a value.
+			endGame = false;
+			tie = false;
+			test = false;
+		}
+
+		function createPlayer(p)
+		{
+			var player = {};
+			player.turn = true;
+			player.symbol = 'X';
+			player.color = "green";
+			player.number = 1;
+			player.casesValue = 1;
+			player.triumph = false;
+
+			return player;
+		}
+
+		function drawGrid(rows, columns, caseWidth, caseHeight)
+ 		{
+ 			//Technically, the grid could be expanded so that it contains more rows.
+ 			//In this case, we have a traditionnal tic-tac-toe grid, so it is a useless caution I took, 
+ 			//but it was an interesting exercise, and it's always nice to do reusable code. 
+ 			ctx.fillStyle = "black";
+ 			for(var i = 0; i < rows; i++)
+ 			{
+	 			yPosition = caseHeight * (i + 1)
+
+	 			ctx.moveTo(0, yPosition);
+	 			ctx.lineTo(caseWidth * 3, yPosition);
+	 			ctx.stroke();
+ 			}
+
+ 			for(var i = 0; i < columns; i++)
+ 			{
+				xPosition = caseWidth * (i + 1)
+
+	 			ctx.moveTo(xPosition, 0);
+	 			ctx.lineTo(xPosition, caseHeight * 3);
+	 			ctx.stroke();
+ 			}
+ 		}
+
+ 		canvas.addEventListener("click", getClickPosition, false);
+
+			function getClickPosition(e)
+ 			{
+	 			var xPosition = e.clientX;
+	 			var yPosition = e.clientY;
+	 			if(player1.turn)
+	 			{
+	 				playerUpdate(player1, xPosition, yPosition);
+	 			}
+ 			}
+
+ 		function playerUpdate(p, x, y)
+ 		{
+ 			/* TODO Boucles imbriquÃ©es 
+ 			for(i = 0; i <= rows; i++)
+ 			{
+ 				for(j = 0; j <= columns; j++)
+ 				{
+ 					if(i == 0)
+ 				}
+ 			}*/
+ 			if(x < caseWidth && y < caseHeight && cases[0][0] == 0)
+ 			{
+ 				cases[0][0] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight && cases[1][0] == 0)
+ 			{
+ 				cases[1][0] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight && cases[2][0] == 0)
+ 			{
+ 				cases[2][0] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth  && y < caseHeight * 2 && y > caseHeight && cases[0][1] == 0)
+ 			{
+ 				cases[0][1] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && x > caseWidth  && y < caseHeight * 2 && y > caseHeight && cases[1][1] == 0)
+ 			{
+ 				cases[1][1] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 &&  x > caseWidth * 2 && y < caseHeight * 2 && y > caseHeight && cases[2][1] == 0)
+ 			{
+ 				cases[2][1] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && cases[0][2] == 0)
+ 			{
+ 				cases[0][2] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 2.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && cases[1][2] == 0)
+ 			{
+ 				cases[1][2] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 2.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][2] == 0)
+ 			{
+ 				cases[2][2] = p.casesValue;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 2.5);
+ 				changeTurns();
+ 			}
+
+/* TODO Faire un retour avec la fonction victory, pis Ãªtre heureux. 
+ 			if(victory(p) == player1)
+ 			{
+ 				shutDownRaph
+ 			}*/
+ 			victory(p);
+ 			
+ 			if(!endGame)
+ 			{
+ 				computerAlgorithm(computer, player1);
+ 			}
+ 		}
+
+ 		function computerAlgorithm(c, p)
+ 		{
+ 			test = true;
+ 			var stop = false;
+
+ 			for(var i = 0; i <= rows; i++) //In this first loop, the computer checks if it can win. If so, it takes the opportunity.
+ 			{
+ 				for(var j = 0; j <= columns; j++)
+ 				{
+ 					tempCase = cases[i][j];
+ 					console.log("TempCase: " + tempCase);
+ 					cases[i][j] = c.casesValue;
+ 					victory(c); //It simulates to place a piece at every cases, one at a time. 
+ 					if(!c.triumph) //If that move doesn't makes it win, it moves on.
+ 					{
+ 						console.log("Cases" + (i) + (j) + cases[i][j]);
+ 						cases[i][j] = tempCase;
+ 						console.log("Cases" + (i) + (j) + cases[i][j]);
+ 					}
+ 					else //If that move makes it win, it stops the loop, set the boolean stop to true so that 
+ 						//it won't do the other verifications, and leaves its piece where it is. Therefore, it wins. 
+ 					{
+ 						j = columns + 1;
+ 						i = rows + 1;
+ 						stop = true;
+ 					}
+ 				}
+ 			}
+
+ 			if(!stop) //In this second loop, the computer checks if the player can win. If so, it prevents them from doing so.
+ 			{
+ 				for(var i = 0; i <= rows; i++)
+	 			{
+	 				for(var j = 0; j <= columns; j++)
+	 				{
+	 					var tempCase = cases[i][j];
+	 					cases[i][j] = p.casesValue;
+	 					victory(p);
+	 					if(!p.triumph)
+	 					{
+	 						cases[i][j] = tempCase;
+	 					}
+	 					else
+	 					{
+	 						j = columns + 1;
+	 						i = rows + 1;
+	 						stop = true;
+	 					}
+	 				}
+	 			}
+ 			}
+
+ 			else if (!stop && cases[0][2] != c.casesValue)
+ 			{
+ 				cases[0][2] = c.casesValue;
+ 				stop = true;
+ 			}
+
+ 			else if (!stop)
+ 			{
+ 				cases[1][2] = c.casesValue;
+ 				stop = true;
+ 			}
+
+ 			
+ 			/*
+ 			if(cases[0][0] == 0)
+ 			{
+ 				cases[0][0] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth/2, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if (cases[0][1] == 0)
+ 			{
+ 				cases[0][1] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth/2, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if (cases[0][2] == 0)
+ 			{
+ 				cases[0][2] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth/2, caseHeight * 2.5);
+ 				changeTurns();
+ 			}*/
+
+ 			for(var i = 0; i < 3; i++)
+ 			{
+ 				console.log(cases[0][i], cases[1][i], cases[2][i]);
+ 			}
+
+ 			test = false;
+ 			computerUpdate(c);
+ 			changeTurns();
+ 		}
+
+ 		function changeTurns()
+ 		{
+ 			player1.turn = !player1.turn;
+ 			computer.turn = ! computer.turn;
+ 			if(player1.turn)
+ 			{
+ 				canvas.addEventListener("click", getClickPosition, false);
+ 			}
+ 			else
+ 			{
+ 				canvas.removeEventListener("click", getClickPosition, false);
+ 			}
+ 		}
+
+ 		function computerUpdate(c)
+ 		{
+ 			/*
+ 			if(cases[0][0] == c.casesValue)
+ 			{
+ 				cases[0][0] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth/2, caseHeight/2);
+ 			}
+ 			else if(cases[0][1] == c.casesValue)
+ 			{
+ 				cases[0][1] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth * 1.5, caseHeight/2);
+ 			}
+ 			else if(cases[0][2] == c.casesValue)
+ 			{
+ 				cases[0][2] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth * 2.5, caseHeight/2);
+ 			}
+ 			else if(cases[1][0] == c.casesValue)
+ 			{
+ 				cases[1][0] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth/2, caseHeight * 1.5);
+ 			}
+ 			else if(cases[1][1] == c.casesValue)
+ 			{
+ 				cases[1][1] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth * 1.5, caseHeight * 1.5);
+ 			}
+ 			else if(cases[1][2] == c.casesValue)
+ 			{
+ 				cases[1][2] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth * 2.5, caseHeight * 1.5);
+ 			}
+ 			else if(cases[2][0] == c.casesValue)
+ 			{
+ 				cases[2][0] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth/2, caseHeight * 2.5);
+ 			}
+ 			else if(cases[2][1] == c.casesValue)
+ 			{
+ 				cases[2][1] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth * 1.5, caseHeight * 2.5);
+ 			}
+ 			else if(cases[2][2] == c.casesValue)
+ 			{
+ 				cases[2][2] = c.casesValue;
+ 				ctx.fillStyle = c.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(c.symbol, caseWidth * 2.5, caseHeight * 2.5);
+ 			}
+
+ 			victory(c); */
+ 			console.log("Team Raph");
+ 		}
+
+ 		
+
+ 		function victory(p)
+ 		{
+ 			var combo = 0;
+
+ 			//Here, the program checks if the player/cmoputer(p) occupies a column or a row.
+ 			for(var i = 0; i <= rows; i++)
+ 			{
+ 				
+ 				for(var j = 0; j <= columns; j++)
+ 				{
+ 					if(cases[i][j] == p.casesValue)
+ 					{
+ 						combo++;
+ 					}
+ 				}
+ 				if(combo == 3)
+ 				{
+ 					p.triumph = true;
+ 					if(!test)
+ 					{
+ 						end(p);
+ 					}
+ 				}
+ 				combo = 0;
+
+ 				for(var j = 0; j <= columns; j++)
+ 				{
+ 					if(cases[j][i] == p.casesValue)
+ 					{
+ 						combo++;
+ 					}
+ 				}
+ 				if(combo == 3)
+ 				{
+ 					p.triumph = true;
+	 				if(!test)
+ 					{
+ 						end(p);
+ 					}
+ 				}
+ 				combo = 0;
+ 			}
+
+ 			//Here, the program checks if the player/computer(p) occupies a diagonal.
+ 			if((cases[0][0] == p.casesValue && cases[1][1] == p.casesValue && cases[2][2] == p.casesValue)
+ 				|| cases [2][0] == p.casesValue && cases [1][1] == p.casesValue && cases [0][2] == p.casesValue)
+ 			{
+ 				if(!test)
+				{
+					end(p);
+				}
+ 			}
+
+ 			//Finally, the program verifies if all cases are filled. Since no victory condition has been met,
+ 			//this could only mean that it's a tie.
+ 			else 
+ 			{
+ 				for(var i = 0; i <= rows; i++)
+	 			{
+	 				for(var j = 0; j <= columns; j++)
+	 				{
+	 					if(cases[i][j] != 0)
+	 					{
+	 						combo++;
+	 					}
+	 				}
+	 			}
+	 			if(combo == 9)
+	 			{
+	 				if(!test)
+ 					{
+ 						tie = true;
+ 						end(p);
+ 					}
+	 			}
+ 			}
+ 		}
+
+ 		function end(p)
+ 		{
+ 			ctx.fillStyle = "black";
+			ctx.font="30px Arial";
+			if(tie)
+			{
+ 				ctx.fillText("Tie!", 130, 46);
+			}
+			else if(p.number == 1)
+			{
+				ctx.fillText("You win!", 130, 46);
+			}
+			else
+			{
+				ctx.fillText("You lose!", 130, 46);
+			}
+ 			endGame = true;
+ 			canvas.removeEventListener("click", getClickPosition, false);
+ 		}
+
+	</script>
+
+</body>
+
+</html>
