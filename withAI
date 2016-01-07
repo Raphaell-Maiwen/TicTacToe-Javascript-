@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Tic-tac-toe</title>
+<meta charset = "UTF-8"> </meta>
+
+
+</head>
+
+<body onload = "init()">
+
+	<canvas id = "canvas" width = "300" height = "300">
+	</canvas>
+
+	<script>
+		function init()
+		{
+			c = document.getElementById("canvas");
+
+	 		ctx = c.getContext("2d");
+
+	 		rows = 2;
+	 		columns = 2;
+	 		caseWidth = 100;
+	 		caseHeight = 100;
+
+	 		drawGrid(rows, columns, caseWidth, caseHeight);
+
+			ctx.fillStyle = "black";
+			ctx.font="30px Arial";
+			//ctx.fillText("Tic-Tac-Toe!" ,50 ,50);
+
+			player1 = createPlayer();
+			computer = createPlayer();
+
+			computer.turn = false;
+			computer.color = "red";
+			computer.symbol = 'O';
+			computer.number = 2;
+			computer.ennemy = 1;
+
+			//t = Top, m = Middle, b = Bottom, l = Left, c = center, r = right
+			tl = false;
+			tc = false;
+			tr = false;
+			ml = false;
+			mc = false;
+			mr = false;
+			bl = false;
+			bc = false;
+			br = false;
+		}
+
+		function createPlayer(p)
+		{
+			var player = {};
+			player.turn = true;
+			player.symbol = 'X';
+			player.color = "green";
+			player.number = 1;
+			player.ennemy = 2;
+			player.tl = false;
+			player.tc = false;
+			player.tr = false;
+			player.ml = false;
+			player.mc = false;
+			player.mr = false;
+			player.bl = false;
+			player.bm = false;
+			player.br = false;
+
+			return player;
+		}
+
+		function drawGrid(rows, columns, caseWidth, caseHeight)
+ 		{
+ 			ctx.fillStyle = "black";
+ 			for(var i = 0; i < rows; i++)
+ 			{
+	 			yPosition = caseHeight * (i + 1)
+
+	 			ctx.moveTo(0, yPosition);
+	 			ctx.lineTo(caseWidth * 3, yPosition);
+	 			ctx.stroke();
+ 			}
+
+ 			for(var i = 0; i < columns; i++)
+ 			{
+				xPosition = caseWidth * (i + 1)
+
+	 			ctx.moveTo(xPosition, 0);
+	 			ctx.lineTo(xPosition, caseHeight * 3);
+	 			ctx.stroke();
+ 			}
+ 		}
+
+ 		canvas.addEventListener("click", getClickPosition, false);
+
+ 		function getClickPosition(e)
+ 		{
+ 			var xPosition = e.clientX;
+ 			var yPosition = e.clientY;
+ 			console.log(xPosition, yPosition);
+ 			if(player1.turn)
+ 			{
+ 				playerUpdate(player1, xPosition, yPosition);
+ 			}
+ 			else
+ 			{
+ 				computerUpdate(computer);
+ 			}
+ 		}
+
+ 		function playerUpdate(p, x, y)
+ 		{
+ 			if(x < caseWidth && y < caseHeight && !tl)
+ 			{
+ 				p.tl = true;
+ 				tl = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight && !tc)
+ 			{
+ 				p.tc = true;
+ 				tc = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight && !tr)
+ 			{
+ 				p.tr = true;
+ 				tr = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight/2);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth  && y < caseHeight * 2 && y > caseHeight && !ml)
+ 			{
+ 				p.ml = true;
+ 				ml = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && x > caseWidth  && y < caseHeight * 2 && y > caseHeight && !mc)
+ 			{
+ 				p.mc = true;
+ 				mc = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 &&  x > caseWidth * 2 && y < caseHeight * 2 && y > caseHeight && !mr)
+ 			{
+ 				p.mr = true;
+ 				mr = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 1.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && !bl)
+ 			{
+ 				p.bl = true;
+ 				bl = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth/2, caseHeight * 2.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && !bc)
+ 			{
+ 				p.bc = true;
+ 				bc = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 2.5);
+ 				changeTurns();
+ 			}
+ 			else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight * 3 && y > caseHeight * 2 && !br)
+ 			{
+ 				p.br = true;
+ 				br = true;
+ 				ctx.fillStyle = p.color;
+				ctx.font="60px Arial";
+ 				ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 2.5);
+ 				changeTurns();
+ 			}
+
+ 			victory(p, true);
+ 		}
+
+ 		function computerUpdate(c)
+ 		{
+ 			if()
+ 		}
+
+ 		function changeTurns()
+ 		{
+ 			player1.turn = !player1.turn;
+ 			computer.turn = ! computer.turn;
+ 		}
+
+ 		function victory(p, bool)
+ 		{
+ 			if((p.tl && p.tc && p.tr) || (p.ml && p.mc && p.mr) || (p.bl && p.bc && p.br) ||
+ 				(p.tl && p.ml && p.bl) || (p.tc && p.mc && p.bc) || (p.tr && p.mr && p.br) ||
+ 				(p.tl && p.mc && p.br) || (p.tr && p.mc && p.bl))
+ 			{
+ 				ctx.fillStyle = "black";
+				ctx.font="30px Arial";
+				if(bool)
+				{
+					ctx.fillText("You win!", 130, 46);
+				}
+ 				else
+ 				{
+ 					ctx.fillText("You lose!", 130, 46);
+ 				}
+ 				canvas.removeEventListener("click", getClickPosition, false);
+ 			}
+
+ 			else if(tl && tc && tr && ml && mc && mr && bl && bc && br)
+ 			{
+ 				ctx.fillStyle = "black";
+				ctx.font="30px Arial";
+ 				ctx.fillText("Tie!", 130, 46);
+ 				canvas.removeEventListener("click", getClickPosition, false);
+ 			}
+ 		}
+
+	</script>
+
+</body>
+
+</html>
