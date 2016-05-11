@@ -26,6 +26,8 @@
             caseWidth = 100;
             caseHeight = 100;
 
+            played = false;
+
             drawGrid(lines, columns, caseWidth, caseHeight);
 
             ctx.fillStyle = "black";
@@ -101,80 +103,23 @@
 
         function casesUpdate(p, x, y)
         {
-            if(x < caseWidth && y < caseHeight && cases[0][0] == 0)
-            {
-                cases[0][0] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth/2, caseHeight/2);
-                changeTurns();
+            for(var i = 1; i <= 3; i++){
+                for(var j = 1; j <= 3; j++){
+                    if(x < caseWidth * i && y < caseHeight * j && cases[i-1][j-1] == 0){
+                        cases[i-1][j-1] = p.casesValue;
+                        ctx.fillStyle = p.color;
+                        ctx.font = "60px Arial";
+                        ctx.fillText(p.symbol, caseWidth * (i - 0.5), caseHeight * (j - 0.5));
+                        changeTurns();
+                        played = true;
+                        break;
+                    }
+                }
+                if(played){
+                    played = false;
+                    break;
+                }
             }
-            else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight && cases[0][1] == 0)
-            {
-                console.log("Okay");
-                cases[0][1] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight/2);
-                changeTurns();
-            }
-            else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight && cases[0][2] == 0)
-            {
-                cases[0][2] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight/2);
-                changeTurns();
-            }
-            else if(x < caseWidth  && y < caseHeight * 2 && y > caseHeight && cases[1][0] == 0)
-            {
-                cases[1][0] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth/2, caseHeight * 1.5);
-                changeTurns();
-            }
-            else if(x < caseWidth * 2 && x > caseWidth  && y < caseHeight * 2 && y > caseHeight && cases[1][1] == 0)
-            {
-                cases[1][1] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 1.5);
-                changeTurns();
-            }
-            else if(x < caseWidth * 3 &&  x > caseWidth * 2 && y < caseHeight * 2 && y > caseHeight && cases[1][2] == 0)
-            {
-                cases[1][2] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 1.5);
-                changeTurns();
-            }
-            else if(x < caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][0] == 0)
-            {
-                cases[2][0] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth/2, caseHeight * 2.5);
-                changeTurns();
-            }
-            else if(x < caseWidth * 2 && x > caseWidth && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][1] == 0)
-            {
-                cases[2][1] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth * 1.5, caseHeight * 2.5);
-                changeTurns();
-            }
-            else if(x < caseWidth * 3 && x > caseWidth * 2 && y < caseHeight * 3 && y > caseHeight * 2 && cases[2][2] == 0)
-            {
-                cases[2][2] = p.casesValue;
-                ctx.fillStyle = p.color;
-                ctx.font="60px Arial";
-                ctx.fillText(p.symbol, caseWidth * 2.5, caseHeight * 2.5);
-                changeTurns();
-            }
-
             victory(p);
         }
 
@@ -216,12 +161,14 @@
                 if((cases[i][0] == p.casesValue && cases[i][1] == p.casesValue && cases[i][2] == p.casesValue)
                     || (cases[0][i] == p.casesValue && cases[1][i] == p.casesValue && cases[2][i] == p.casesValue))
                 {
+                    /*
                     if(p.color == "red"){
                         ctx.fillStyle = "crimson";
                     }
                     else{
                         ctx.fillStyle = "forestGreen";
-                    }
+                    }*/
+                    ctx.fillStyle = "black";
                     ctx.font="30px Arial";
                     ctx.fillText("Player " + p.number + " wins!", 130, 46);
                     canvas.removeEventListener("click", getClickPosition, false);
