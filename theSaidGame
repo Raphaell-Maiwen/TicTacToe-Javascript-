@@ -105,7 +105,8 @@
         {
             for(var i = 1; i <= 3; i++){
                 for(var j = 1; j <= 3; j++){
-                    if(x < caseWidth * i && y < caseHeight * j && cases[i-1][j-1] == 0){
+                    if(x < caseWidth * i && x > caseWidth * (i-1) && y < caseHeight * j && 
+                        y > caseHeight * (j-1) && cases[i-1][j-1] == 0){
                         cases[i-1][j-1] = p.casesValue;
                         ctx.fillStyle = p.color;
                         ctx.font = "60px Arial";
